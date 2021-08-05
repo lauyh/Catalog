@@ -20,6 +20,8 @@ namespace Catalog.Controllers
 
         }
 
+        // GET /items
+        [HttpGet]
         public IEnumerable<Item> GetItems()
         {
             var items = repository.GetItems();
