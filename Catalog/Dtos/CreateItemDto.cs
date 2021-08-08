@@ -8,6 +8,7 @@ namespace Catalog.Dtos
         public string Name { get; set; }
         
         [Required]
+        [RangeAttribute(1, 10000)]
         public decimal Price { get; init; }
     }
 }
