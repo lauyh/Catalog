@@ -2,14 +2,8 @@
 
 namespace Catalog.Dtos
 {
-    public record CreateItemDto
+    public class UpdateItemDto
     {
-        public CreateItemDto(string name, decimal price)
-        {
-            Name = name;
-            Price = price;
-        }
-
         [Required]
         public string Name { get; set; }
         
