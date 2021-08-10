@@ -15,32 +15,35 @@ namespace Catalog.Repositories
             new Item { Id = Guid.NewGuid(), Name = "Iron Sword", Price = 25, CreatedDate = DateTimeOffset.UtcNow },
         };
 
-        public IEnumerable<Item> GetItems()
+        public async Task<IEnumerable<Item>> GetItems()
         {
-            return _items;
+            return await Task.FromResult(_items);
         }
 
-        public Item GetItem(Guid id)
+        public async Task<Item> GetItem(Guid id)
         {
-            return _items.SingleOrDefault(item => item.Id == id);
+            var item = _items.SingleOrDefault(item => item.Id == id);
+            return await Task.FromResult(item);
         }
 
-        public void CreateItem(Item item)
+        public async Task CreateItem(Item item)
         {
             _items.Add(item);
+            await Task.CompletedTask;
         }
 
-        public void UpdateItem(Item item)
+        public async Task UpdateItem(Item item)
         {
             var index = _items.FindIndex(existingItem => existingItem.Id == item.Id);
             _items[index] = item;
-            
+            await Task.CompletedTask;
         }
 
-        public void DeleteItem(Guid Id)
+        public async Task DeleteItem(Guid Id)
         {
             var index = _items.FindIndex(existingItem => existingItem.Id == Id);
             _items.RemoveAt(index);
+            await Task.CompletedTask;
         }
     }
 }

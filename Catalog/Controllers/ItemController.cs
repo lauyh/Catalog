@@ -23,17 +23,17 @@ namespace Catalog.Controllers
 
         // GET /items
         [HttpGet]
-        public IEnumerable<ItemDto> GetItems()
+        public async  Task<IEnumerable<ItemDto>> GetItems()
         {
-            var items = repository.GetItems().Select(item => item.AsDto());
+            var items = (await repository.GetItems()).Select(item => item.AsDto());
             return items;
         }
         
         // GET /items/{id}
         [HttpGet("{id}")]
-        public ActionResult<ItemDto> GetItem(Guid id)
+        public async Task<ActionResult<ItemDto>> GetItem(Guid id)
         {
-            var item = repository.GetItem(id);
+            var item = await repository.GetItem(id);
             if(item is null)
             {
                 return NotFound();
@@ -43,7 +43,7 @@ namespace Catalog.Controllers
         
         // POST /items
         [HttpPost]
-        public ActionResult<ItemDto> CreateItem(CreateItemDto itemDto)
+        public async Task<ActionResult<ItemDto>> CreateItem(CreateItemDto itemDto)
         {
             Item item = new()
             {
@@ -53,15 +53,15 @@ namespace Catalog.Controllers
                 CreatedDate = DateTime.UtcNow
             };
 
-            repository.CreateItem(item);
+            await repository.CreateItem(item);
             return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item.AsDto());
         }
 
         // PUT /items
         [HttpPut("{id}")]
-        public ActionResult UpdateItem(Guid id, UpdateItemDto itemDto)
+        public async Task<ActionResult> UpdateItem(Guid id, UpdateItemDto itemDto)
         {
-            var existingItem = repository.GetItem(id);
+            var existingItem = await repository.GetItem(id);
             if (existingItem is null)
             {
                 return NotFound();
@@ -77,9 +77,9 @@ namespace Catalog.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteItem(Guid id)
+        public async Task<ActionResult> DeleteItem(Guid id)
         {
-            var existingItem = repository.GetItem(id); 
+            var existingItem = await repository.GetItem(id); 
             if (existingItem is null)
             {
                 return NotFound();
